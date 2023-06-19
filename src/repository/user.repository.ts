@@ -1,6 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { UserEntity } from '../entity/user.entity';
-import { Repository } from 'typeorm';
+import { User } from '../entity/user.entity';
+import { DataSource, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from 'src/user/dto/user.dto';
 
-@Injectable()
-export class UserRepository extends Repository<UserEntity> {}
+export class UserRepository extends Repository<User> {
+  constructor(@InjectRepository(User) private dataSource: DataSource) {
+    super(User, dataSource.manager);
+  }
+
+  async insertUser(user: CreateUserDto) {
+    this.insert(user);
+  }
+}
