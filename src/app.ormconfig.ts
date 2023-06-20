@@ -8,5 +8,6 @@ export const ormconfig: TypeOrmModuleOptions = {
   password: '327812',
   database: 'test',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  charset: 'utf8mb4_unicode_ci',
   synchronize: true,
 };
