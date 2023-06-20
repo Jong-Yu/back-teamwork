@@ -6,7 +6,7 @@ import { UserRepository } from '../repository/user.repository';
 export class UserService {
   constructor(private userRepository: UserRepository) {}
 
-  async create(userDto: CreateUserDto) {
+  async insertUser(userDto: CreateUserDto) {
     console.log('userDto', userDto);
 
     return this.userRepository.insertUser(userDto);
