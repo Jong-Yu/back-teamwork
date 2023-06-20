@@ -1,13 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+// import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity()
-export class User extends BaseEntity {
-  @PrimaryColumn()
-  email: string;
+// @Entity()
+// export class User extends BaseEntity {
+//   @PrimaryColumn()
+//   email: string;
 
-  @Column()
-  name: string;
+//   @Column()
+//   name: string;
 
-  @Column()
-  age: number;
-}
+//   @Column()
+//   age: number;
+// }
