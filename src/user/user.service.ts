@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/user.dto';
-import { UserRepository } from '../repository/user.repository';
+import { CreateUserDto } from '../generated/nestjs-dto/user/dto/create-user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  // constructor(private userRepository: UserRepository) {}
 
   async insertUser(userDto: CreateUserDto) {
     console.log('userDto', userDto);
-
-    return this.userRepository.insertUser(userDto);
   }
 }

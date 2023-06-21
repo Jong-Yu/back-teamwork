@@ -8,8 +8,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto } from '../generated/nestjs-dto/create-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   // `constructor`를 사용하여 `UserService` 클래스를 가져와 사용합니다
