@@ -7,9 +7,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from '../generated/nestjs-dto/user/dto/create-user.dto';
 import { UserService } from './user.service';
-import { CreateUserDto } from '../generated/nestjs-dto/create-user.dto';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('user')
 @Controller('user')
@@ -44,6 +44,7 @@ export class UserController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create user' })
   createUser(@Body() userDto: CreateUserDto) {
     return this.userService.insertUser(userDto);
   }

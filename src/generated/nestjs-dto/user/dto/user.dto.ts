@@ -6,7 +6,9 @@ export class UserDto {
     format: `int32`,
   })
   id: number;
+  @ApiProperty()
   name: string | null;
+  @ApiProperty()
   email: string;
   @ApiProperty({
     type: `integer`,
