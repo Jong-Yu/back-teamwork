@@ -1,20 +1,28 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Post } from '../../post/entities/post.entity';
 import { Profile } from '../../profile/entities/profile.entity';
+import { IsInt, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class User {
-  @ApiProperty({
-    type: `integer`,
-    format: `int32`,
-  })
+  @IsInt()
   id: number;
+
+  @IsString()
   name: string | null;
+
+  @IsString()
   email: string;
-  @ApiProperty({
-    type: `integer`,
-    format: `int32`,
-  })
-  phone: number | null;
+
+  @IsString()
+  phone: string | null;
+
+  @IsInt()
+  age: number;
+
+  @IsObject()
+  @IsOptional()
   Post?: Post[];
+
+  @IsObject()
+  @IsOptional()
   Profile?: Profile | null;
 }

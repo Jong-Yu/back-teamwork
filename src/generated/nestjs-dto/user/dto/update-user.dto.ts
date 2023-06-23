@@ -1,11 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserDto {
+  @IsString()
+  @IsOptional()
   name?: string;
+
+  @IsString()
+  @IsOptional()
   email?: string;
-  @ApiProperty({
-    type: `integer`,
-    format: `int32`,
-  })
-  phone?: number;
+
+  @IsString()
+  @IsOptional()
+  phone?: string;
+
+  @IsInt()
+  @IsOptional()
+  age?: number;
 }
