@@ -6,9 +6,8 @@ import {
   Param,
   Post,
   Put,
-  Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../generated/nestjs-dto/user/dto/create-user.dto';
 import { UserService } from './user.service';
 import { UserDto } from 'src/generated/nestjs-dto/user/dto/user.dto';

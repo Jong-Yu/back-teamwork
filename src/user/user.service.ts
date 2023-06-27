@@ -1,8 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { CreateUserDto } from '../generated/nestjs-dto/user/dto/create-user.dto';
 import { PrismaClient } from '@prisma/client';
-import { UserDto } from 'src/generated/nestjs-dto/user/dto/user.dto';
-import { UpdateUserDto } from 'src/generated/nestjs-dto/user/dto/update-user.dto';
+import { UserDto } from '../generated/nestjs-dto/user/dto/user.dto';
+import { CreateUserDto } from '../generated/nestjs-dto/user/dto/create-user.dto';
+import { UpdateUserDto } from '../generated/nestjs-dto/user/dto/update-user.dto';
 
 @Injectable()
 export class UserService extends PrismaClient implements OnModuleInit {
@@ -10,7 +10,7 @@ export class UserService extends PrismaClient implements OnModuleInit {
     await this.$connect();
   }
 
-  async findAll() {
+  async findAll(): Promise<UserDto[]> {
     return await this.user.findMany();
   }
 
