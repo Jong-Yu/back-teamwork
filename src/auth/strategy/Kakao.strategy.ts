@@ -1,5 +1,12 @@
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-kakao';
+
+export interface KaKaoStrategyResponse {
+  accessToken: string;
+  refreshToken: string;
+  profile: Profile;
+}
 
 interface Profile {
   id: string;
@@ -7,11 +14,13 @@ interface Profile {
   _json: {
     kakao_account: {
       email: string;
+      birthday: string;
     };
   };
 }
 
-export class JwtKakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
+@Injectable()
+export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   constructor() {
     super({
       clientID: process.env.KAKAO_CLIENT_ID,
@@ -21,14 +30,10 @@ export class JwtKakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    console.log('accessToken' + accessToken);
-    console.log('refreshToken' + refreshToken);
-    console.log(profile);
-
     return {
-      name: profile.displayName,
-      email: profile._json.kakao_account.email,
-      password: profile.id,
+      accessToken,
+      refreshToken,
+      profile,
     };
   }
 }
