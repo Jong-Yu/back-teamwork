@@ -1,10 +1,24 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { PostModule } from './post/post.module';
 import { AuthModule } from './auth/auth.module';
+import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
 
 @Module({
-  imports: [UserModule, PostModule, AuthModule],
+  imports: [
+    UserModule,
+    AuthModule,
+    PrismaModule.forRoot({
+      isGlobal: true,
+      prismaServiceOptions: {
+        middlewares: [
+          loggingMiddleware({
+            logger: new Logger('PrismaMiddleware'),
+            logLevel: 'log',
+          }),
+        ],
+      },
+    }),
+  ],
   controllers: [],
   providers: [],
 })

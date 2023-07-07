@@ -1,46 +1,17 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { UserDto } from '../generated/nestjs-dto/user/dto/user.dto';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../generated/nestjs-dto/user/dto/create-user.dto';
-import { UpdateUserDto } from '../generated/nestjs-dto/user/dto/update-user.dto';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
-export class UserService extends PrismaClient implements OnModuleInit {
-  async onModuleInit() {
-    await this.$connect();
-  }
-
-  async findAll(): Promise<UserDto[]> {
-    return await this.user.findMany();
-  }
-
-  async findManyByIds(ids: number[]) {
-    return await this.user.findMany({ where: { id: { in: ids } } });
-  }
-
-  async findManyByDto(userDto: UserDto) {
-    return await this.user.findMany({ where: userDto });
-  }
-
-  async findOne(id: number) {
-    return await this.user.findUnique({ where: { id } });
-  }
-
-  async findOneByEmail(email: string) {
-    return await this.user.findUnique({ where: { email } });
-  }
+export class UserService {
+  // async onModuleInit() {
+  //   await this.$connect();
+  // }
+  constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    return await this.user.create({
-      data: createUserDto,
+    return await this.prisma.user.create({
+      data: { ...createUserDto },
     });
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.user.update({ data: updateUserDto, where: { id } });
-  }
-
-  async remove(id: number) {
-    return await this.user.delete({ where: { id } });
   }
 }

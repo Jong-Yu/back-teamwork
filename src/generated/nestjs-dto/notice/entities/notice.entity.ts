@@ -1,15 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Team } from '../../team/entities/team.entity';
 import { Member } from '../../member/entities/member.entity';
 
-export class User {
+export class Notice {
   id: string;
-  name: string;
-  email: string | null;
-  phone: string;
+  team_id: string;
+  member_id: string;
+  title: string;
   @ApiProperty({
     type: `string`,
     format: `date-time`,
   })
-  sign_date: Date;
-  Member?: Member[];
+  registed_date: Date;
+  Team?: Team;
+  Member?: Member;
 }

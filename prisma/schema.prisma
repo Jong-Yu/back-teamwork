@@ -5,15 +5,15 @@ generator client {
 generator nestjsDto {
   provider                        = "prisma-generator-nestjs-dto"
   output                          = "../src/generated/nestjs-dto"
-  reExport                        = "false"
-  fileNamingStyle                 = "camel"
-  createDtoPrefix                 = "Create"
-  outputToNestJsResourceStructure = "true"
-  dtoSuffix                       = "Dto"
   exportRelationModifierClasses   = "true"
+  reExport                        = "false"
   entityPrefix                    = ""
-  entitySuffix                    = ""
   updateDtoPrefix                 = "Update"
+  outputToNestJsResourceStructure = "true"
+  createDtoPrefix                 = "Create"
+  dtoSuffix                       = "Dto"
+  entitySuffix                    = ""
+  fileNamingStyle                 = "camel"
 }
 
 datasource db {
@@ -21,31 +21,90 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String   @db.VarChar(255)
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  content   String?  @db.Text
-  published Boolean  @default(false)
-  authorId  Int
-  User      User     @relation(fields: [authorId], references: [id], onUpdate: Restrict, map: "post_ibfk_1")
-
-  @@index([authorId], map: "authorId")
-}
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String? @db.Text
-  userId Int     @unique(map: "userId")
-  User   User    @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "profile_ibfk_1")
-}
-
 model User {
-  id      Int      @id @default(autoincrement())
-  name    String?  @db.VarChar(255)
-  email   String   @unique(map: "email") @db.VarChar(255)
-  phone   String?
-  age     Int
-  Post    Post[]
-  Profile Profile?
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(45)
+  email     String?  @db.VarChar(45)
+  phone     String   @db.VarChar(45)
+  sign_date DateTime @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP"))
+  Member    Member[]
+}
+
+model Member {
+  id          String        @id @default(cuid())
+  team_id     String        @db.VarChar(45)
+  user_id     String        @db.VarChar(45)
+  duty        String        @db.VarChar(45)
+  status      Member_status
+  status_date DateTime      @db.Timestamp(0) @default(now())
+  Team        Team          @relation(fields: [team_id], references: [id], onUpdate: Restrict, map: "FK_1")
+  User        User          @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "FK_2")
+  Notice      Notice[]
+  Schedule    Schedule[]
+  Voting      Voting[]
+
+  @@index([team_id], map: "FK_1")
+  @@index([user_id], map: "FK_2")
+}
+
+model Notice {
+  id            String                         @id @default(cuid())
+  team_id       String                         @db.VarChar(45)
+  member_id     String                         @db.VarChar(45)
+  title         String                         @db.VarChar(45)
+  desc          Unsupported("multilinestring")
+  registed_date DateTime                       @db.Timestamp(0) @default(now())
+  Team          Team                           @relation(fields: [team_id], references: [id], onUpdate: Restrict, map: "FK_6_1")
+  Member        Member                         @relation(fields: [member_id], references: [id], onUpdate: Restrict, map: "FK_7")
+
+  @@index([team_id], map: "FK_1")
+  @@index([member_id], map: "FK_2")
+}
+
+model Schedule {
+  id              String                          @id @default(cuid())
+  team_id         String                          @db.VarChar(45)
+  member_id       String                          @db.VarChar(45)
+  title           String                          @db.VarChar(45)
+  date            DateTime                        @db.Timestamp(0) @default(now())
+  location        String                          @db.VarChar(45)
+  location_detail String                          @db.VarChar(45)
+  min_attend      Int?
+  desc            Unsupported("multilinestring")?
+  registred_date  DateTime                        @db.Timestamp(0) @default(now())
+  Team            Team                            @relation(fields: [team_id], references: [id], onUpdate: Restrict, map: "FK_6")
+  Member          Member                          @relation(fields: [member_id], references: [id], onUpdate: Restrict, map: "FK_8")
+  Voting          Voting[]
+
+  @@index([team_id], map: "FK_2")
+  @@index([member_id], map: "FK_2_1")
+}
+
+model Team {
+  id              String                          @id @default(cuid())
+  name            String                          @db.VarChar(45)
+  logo            String?                         @db.VarChar(45)
+  desc            Unsupported("multilinestring")?
+  registered_date DateTime                        @db.Timestamp(0) @default(now())
+  Member          Member[]
+  Notice          Notice[]
+  Schedule        Schedule[]
+}
+
+model Voting {
+  schedule_id String   @db.VarChar(45)
+  member_id   String   @db.VarChar(45)
+  id_2        String   @id @default(cuid())
+  voting      Boolean
+  voting_date DateTime @db.Timestamp(0) @default(now())
+  Schedule    Schedule @relation(fields: [schedule_id], references: [id], onUpdate: Restrict, map: "FK_4")
+  Member      Member   @relation(fields: [member_id], references: [id], onUpdate: Restrict, map: "FK_5")
+
+  @@index([schedule_id], map: "FK_1")
+  @@index([member_id], map: "FK_2")
+}
+
+enum Member_status {
+  active
+  drop
 }

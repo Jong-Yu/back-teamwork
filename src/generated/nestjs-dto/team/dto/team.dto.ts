@@ -1,13 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserDto {
+export class TeamDto {
   id: string;
   name: string;
-  email: string | null;
-  phone: string;
+  logo: string | null;
   @ApiProperty({
     type: `string`,
     format: `date-time`,
   })
-  sign_date: Date;
+  registered_date: Date;
 }
