@@ -1,17 +1,32 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Schedule } from '../../schedule/entities/schedule.entity';
-import { Member } from '../../member/entities/member.entity';
+import {
+  IsBoolean,
+  IsDate,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class Voting {
+  @IsString()
+  id: string;
+
+  @IsString()
   schedule_id: string;
+
+  @IsString()
   member_id: string;
-  id_2: string;
+
+  @IsBoolean()
   voting: boolean;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   voting_date: Date;
+
+  @IsObject(Schedule)
+  @IsOptional()
   Schedule?: Schedule;
+
+  @IsObject(Member)
+  @IsOptional()
   Member?: Member;
 }

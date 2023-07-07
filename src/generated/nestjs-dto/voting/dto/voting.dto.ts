@@ -1,11 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsDate, IsString } from 'class-validator';
 
 export class VotingDto {
-  id_2: string;
+  @IsString()
+  id: string;
+
+  @IsBoolean()
   voting: boolean;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   voting_date: Date;
 }

@@ -52,7 +52,7 @@ model Notice {
   team_id       String                         @db.VarChar(45)
   member_id     String                         @db.VarChar(45)
   title         String                         @db.VarChar(45)
-  desc          Unsupported("multilinestring")
+  desc          String                         @db.VarChar(45)
   registed_date DateTime                       @db.Timestamp(0) @default(now())
   Team          Team                           @relation(fields: [team_id], references: [id], onUpdate: Restrict, map: "FK_6_1")
   Member        Member                         @relation(fields: [member_id], references: [id], onUpdate: Restrict, map: "FK_7")
@@ -92,9 +92,9 @@ model Team {
 }
 
 model Voting {
+  id          String   @id @default(cuid())
   schedule_id String   @db.VarChar(45)
   member_id   String   @db.VarChar(45)
-  id_2        String   @id @default(cuid())
   voting      Boolean
   voting_date DateTime @db.Timestamp(0) @default(now())
   Schedule    Schedule @relation(fields: [schedule_id], references: [id], onUpdate: Restrict, map: "FK_4")

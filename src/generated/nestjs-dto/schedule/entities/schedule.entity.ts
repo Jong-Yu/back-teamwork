@@ -1,31 +1,44 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Team } from '../../team/entities/team.entity';
-import { Member } from '../../member/entities/member.entity';
-import { Voting } from '../../voting/entities/voting.entity';
+import { Team, Member, Voting } from '@prisma/client';
+import { IsDate, IsInt, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class Schedule {
+  @IsString()
   id: string;
+
+  @IsString()
   team_id: string;
+
+  @IsString()
   member_id: string;
+
+  @IsString()
   title: string;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   date: Date;
+
+  @IsString()
   location: string;
+
+  @IsString()
   location_detail: string;
-  @ApiProperty({
-    type: `integer`,
-    format: `int32`,
-  })
+
+  @IsInt()
+  @IsOptional()
   min_attend: number | null;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   registred_date: Date;
+
+  @IsObject(Team)
+  @IsOptional()
   Team?: Team;
+
+  @IsObject(Member)
+  @IsOptional()
   Member?: Member;
+
+  @IsObject(Voting)
+  @IsOptional()
   Voting?: Voting[];
 }

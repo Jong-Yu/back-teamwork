@@ -1,15 +1,24 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Member } from '../../member/entities/member.entity';
+import { Member } from '@prisma/client';
+import { IsDate, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class User {
+  @IsString()
   id: string;
+
+  @IsString()
   name: string;
+
+  @IsString()
+  @IsOptional()
   email: string | null;
+
+  @IsString()
   phone: string;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   sign_date: Date;
+
+  @IsObject(Member)
+  @IsOptional()
   Member?: Member[];
 }

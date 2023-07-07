@@ -1,12 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 
 export class TeamDto {
+  @IsString()
   id: string;
+
+  @IsString()
   name: string;
+
+  @IsString()
+  @IsOptional()
   logo: string | null;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   registered_date: Date;
 }

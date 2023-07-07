@@ -1,12 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateScheduleDto {
+  @IsString()
+  @IsOptional()
   title?: string;
+
+  @IsString()
+  @IsOptional()
   location?: string;
+
+  @IsString()
+  @IsOptional()
   location_detail?: string;
-  @ApiProperty({
-    type: `integer`,
-    format: `int32`,
-  })
+
+  @IsNumber()
+  @IsOptional()
   min_attend?: number;
 }

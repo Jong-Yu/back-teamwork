@@ -1,11 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsString } from 'class-validator';
 
 export class NoticeDto {
+  @IsString()
   id: string;
+
+  @IsString()
   title: string;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   registed_date: Date;
 }

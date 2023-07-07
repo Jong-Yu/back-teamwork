@@ -1,16 +1,16 @@
 import { Member_status } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsEnum, IsString } from 'class-validator';
 
 export class MemberDto {
+  @IsString()
   id: string;
+
+  @IsString()
   duty: string;
-  @ApiProperty({
-    enum: Member_status,
-  })
+
+  @IsEnum(Member_status)
   status: Member_status;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   status_date: Date;
 }

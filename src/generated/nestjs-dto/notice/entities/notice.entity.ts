@@ -1,17 +1,27 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { Team } from '../../team/entities/team.entity';
-import { Member } from '../../member/entities/member.entity';
+import { Team, Notice } from '@prisma/client';
+import { IsDate, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class Notice {
+  @IsString()
   id: string;
+
+  @IsString()
   team_id: string;
+
+  @IsString()
   member_id: string;
+
+  @IsString()
   title: string;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   registed_date: Date;
+
+  @IsObject(Team)
+  @IsOptional()
   Team?: Team;
+
+  @IsObject(Member)
+  @IsOptional()
   Member?: Member;
 }

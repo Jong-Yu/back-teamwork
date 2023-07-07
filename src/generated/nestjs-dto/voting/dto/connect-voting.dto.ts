@@ -1,3 +1,6 @@
+import { IsString } from 'class-validator';
+
 export class ConnectVotingDto {
-  id_2: string;
+  @IsString()
+  id: string;
 }

@@ -1,28 +1,55 @@
-import { Member_status } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
-import { Team } from '../../team/entities/team.entity';
-import { User } from '../../user/entities/user.entity';
-import { Notice } from '../../notice/entities/notice.entity';
-import { Schedule } from '../../schedule/entities/schedule.entity';
-import { Voting } from '../../voting/entities/voting.entity';
+import {
+  Member_status,
+  Team,
+  User,
+  Notice,
+  Schedule,
+  Voting,
+} from '@prisma/client';
+import {
+  IsDate,
+  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class Member {
+  @IsString()
   id: string;
+
+  @IsString()
   team_id: string;
+
+  @IsString()
   user_id: string;
+
+  @IsString()
   duty: string;
-  @ApiProperty({
-    enum: Member_status,
-  })
+
+  @IsEnum(Member_status)
   status: Member_status;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   status_date: Date;
+
+  @IsObject(Team)
+  @IsOptional()
   Team?: Team;
+
+  @IsObject(User)
+  @IsOptional()
   User?: User;
+
+  @IsObject(Notice)
+  @IsOptional()
   Notice?: Notice[];
+
+  @IsObject(Schedule)
+  @IsOptional()
   Schedule?: Schedule[];
+
+  @IsObject(Voting)
+  @IsOptional()
   Voting?: Voting[];
 }

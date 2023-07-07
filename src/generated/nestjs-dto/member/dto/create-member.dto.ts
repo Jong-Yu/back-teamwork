@@ -1,10 +1,10 @@
 import { Member_status } from '@prisma/client';
-import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { IsEnum, IsString } from 'class-validator';
 
 export class CreateMemberDto {
+  @IsString()
   duty: string;
-  @ApiProperty({
-    enum: Member_status,
-  })
+
+  @IsEnum(Member_status)
   status: Member_status;
 }

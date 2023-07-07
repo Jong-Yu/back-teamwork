@@ -1,23 +1,25 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsInt, IsOptional, IsString } from 'class-validator';
 
 export class ScheduleDto {
+  @IsString()
   id: string;
+
+  @IsString()
   title: string;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   date: Date;
+
+  @IsString()
   location: string;
+
+  @IsString()
   location_detail: string;
-  @ApiProperty({
-    type: `integer`,
-    format: `int32`,
-  })
+
+  @IsInt()
+  @IsOptional()
   min_attend: number | null;
-  @ApiProperty({
-    type: `string`,
-    format: `date-time`,
-  })
+
+  @IsDate()
   registred_date: Date;
 }
