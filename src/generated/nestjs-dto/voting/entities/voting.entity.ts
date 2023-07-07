@@ -1,3 +1,4 @@
+import { Member, Schedule } from '@prisma/client';
 import {
   IsBoolean,
   IsDate,

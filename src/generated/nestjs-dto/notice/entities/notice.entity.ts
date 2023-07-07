@@ -1,4 +1,4 @@
-import { Team, Notice } from '@prisma/client';
+import { Team, Member } from '@prisma/client';
 import { IsDate, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class Notice {
