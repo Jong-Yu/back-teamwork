@@ -33,23 +33,23 @@ export class Member {
   @IsDate()
   status_date: Date;
 
-  @IsObject(Team)
+  @IsObject()
   @IsOptional()
   Team?: Team;
 
-  @IsObject(User)
+  @IsObject()
   @IsOptional()
   User?: User;
 
-  @IsObject(Notice)
+  @IsObject()
   @IsOptional()
   Notice?: Notice[];
 
-  @IsObject(Schedule)
+  @IsObject()
   @IsOptional()
   Schedule?: Schedule[];
 
-  @IsObject(Voting)
+  @IsObject()
   @IsOptional()
   Voting?: Voting[];
 }

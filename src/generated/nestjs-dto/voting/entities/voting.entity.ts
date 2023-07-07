@@ -22,11 +22,11 @@ export class Voting {
   @IsDate()
   voting_date: Date;
 
-  @IsObject(Schedule)
+  @IsObject()
   @IsOptional()
   Schedule?: Schedule;
 
-  @IsObject(Member)
+  @IsObject()
   @IsOptional()
   Member?: Member;
 }

@@ -18,7 +18,7 @@ export class User {
   @IsDate()
   sign_date: Date;
 
-  @IsObject(Member)
+  @IsObject()
   @IsOptional()
   Member?: Member[];
 }

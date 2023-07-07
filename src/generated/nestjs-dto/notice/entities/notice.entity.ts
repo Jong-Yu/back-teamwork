@@ -17,11 +17,11 @@ export class Notice {
   @IsDate()
   registed_date: Date;
 
-  @IsObject(Team)
+  @IsObject()
   @IsOptional()
   Team?: Team;
 
-  @IsObject(Member)
+  @IsObject()
   @IsOptional()
   Member?: Member;
 }

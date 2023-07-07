@@ -15,15 +15,15 @@ export class Team {
   @IsDate()
   registered_date: Date;
 
-  @IsObject(Member)
+  @IsObject()
   @IsOptional()
   Member?: Member[];
 
-  @IsObject(Notice)
+  @IsObject()
   @IsOptional()
   Notice?: Notice[];
 
-  @IsObject(Schedule)
+  @IsObject()
   @IsOptional()
   Schedule?: Schedule[];
 }

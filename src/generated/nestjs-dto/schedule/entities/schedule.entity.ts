@@ -30,15 +30,15 @@ export class Schedule {
   @IsDate()
   registred_date: Date;
 
-  @IsObject(Team)
+  @IsObject()
   @IsOptional()
   Team?: Team;
 
-  @IsObject(Member)
+  @IsObject()
   @IsOptional()
   Member?: Member;
 
-  @IsObject(Voting)
+  @IsObject()
   @IsOptional()
   Voting?: Voting[];
 }
