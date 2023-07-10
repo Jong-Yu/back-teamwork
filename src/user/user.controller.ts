@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../_model/user/dto/create-user.dto';
 
-@ApiTags('user')
+@ApiTags('유저 API')
 @Controller('user')
 export class UserController {
   // `constructor`를 사용하여 `UserService` 클래스를 가져와 사용합니다
