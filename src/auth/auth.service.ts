@@ -24,23 +24,23 @@ export class AuthService {
     const user = await this.userService.findUserByEmail(profile.email);
 
     // 3, 회원가입이 안되어있다면? 자동회원가입
+    const refreshToken = await this.setRefreshToken(profile);
     if (!user) {
+      // 3-1. 회원가입시 refresh_token을 DB 저장
       await this.userService.create({
         name: profile.name,
         email: profile.email,
         phone: '010-1111-1111',
+        refreshToken,
+      });
+    } else {
+      // 3-2. 회원가입이 되어있다면? refresh_token을 업데이트
+      await this.userService.update(profile.email, {
+        refreshToken,
       });
     }
 
-    // 4. user 정보를 가지고 jwt 토큰을 만들어서 리턴
-
-    try {
-      const jwtToken = await this.getJwtToken(profile);
-      console.log(jwtToken);
-      return jwtToken;
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.getJwtToken(profile);
   }
 
   async getKakaoToken(code: string): Promise<KakaoTokenDto> {
@@ -115,7 +115,7 @@ export class AuthService {
       },
     );
 
-    this.userService.
+    return refreshToken;
   }
 
   async logout(access_token: string) {

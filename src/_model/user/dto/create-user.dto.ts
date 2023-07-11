@@ -10,4 +10,8 @@ export class CreateUserDto {
 
   @IsString()
   phone: string;
+
+  @IsString()
+  @IsOptional()
+  refreshToken?: string;
 }
