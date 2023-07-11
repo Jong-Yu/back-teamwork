@@ -1,4 +1,5 @@
 import { Logger, Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
@@ -17,6 +18,9 @@ import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
           }),
         ],
       },
+    }),
+    JwtModule.register({
+      global: true,
     }),
   ],
   controllers: [],

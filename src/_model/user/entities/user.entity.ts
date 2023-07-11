@@ -18,6 +18,10 @@ export class User {
   @IsDate()
   sign_date: Date;
 
+  @IsString()
+  @IsOptional()
+  refreshToken: string | null;
+
   @IsObject()
   @IsOptional()
   Member?: Member[];

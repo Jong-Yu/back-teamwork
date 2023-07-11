@@ -10,9 +10,6 @@ export class AuthController {
   @Post('kakao')
   async loginKakao(@Body('code') code: string) {
     const token = await this.authService.getToken(code);
-
-    console.log('controller', token);
-
     return token;
   }
 
