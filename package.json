@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "generate": "npx prisma generate && npx prettier --write 'src/generated/nestjs-dto/**/*.ts'"
+    "generate": "npx prisma generate && npx prettier --write 'src/_model/**/*.ts'"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.0",
@@ -26,6 +26,7 @@
     "axios": "^1.4.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "cookie-parser": "^1.4.6",
     "express-session": "^1.17.3",
     "nestjs-prisma": "^0.20.1",
     "passport-kakao": "^1.0.1",
@@ -40,6 +41,7 @@
     "@nestjs/testing": "^9.0.0",
     "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.63",
+    "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.13",
     "@types/node": "18.16.12",
     "@types/passport-kakao": "^1.0.0",

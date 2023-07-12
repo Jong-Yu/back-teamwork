@@ -5,8 +5,5 @@ export class UserKakaoDto {
   name: string;
 
   @IsString()
-  kakaoId: string;
-
-  @IsString()
   email: string;
 }

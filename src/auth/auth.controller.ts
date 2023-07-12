@@ -1,7 +1,8 @@
 import { Response } from 'express';
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { AuthGuard } from '../_middleware/AuthGuard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,6 +28,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  @UseGuards(AuthGuard)
   async logout(@Body('access_token') access_token: string): Promise<void> {
     this.authService.logout(access_token);
   }
