@@ -21,6 +21,7 @@ import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
     }),
     JwtModule.register({
       global: true,
+      secret: process.env.JWT_SECRET,
     }),
   ],
   controllers: [],
