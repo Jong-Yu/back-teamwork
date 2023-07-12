@@ -24,7 +24,6 @@ export class AuthController {
 
       return res.send(accessToken);
     } catch (e) {
-      console.log(e);
       res.send(e);
     }
   }

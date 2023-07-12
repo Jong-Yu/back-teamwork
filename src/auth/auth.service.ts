@@ -15,20 +15,20 @@ export class AuthService {
   ) {}
 
   async getToken(code: string) {
-    // 1. code를 이용해서 access_token 받기
+    // 1. 코드를 이용하여 access_token 얻기
     const token = await this.getKakaoToken(code);
     const kakaoToken = token.access_token;
 
-    // 2. kakaoToken 이용해서 사용자 정보 받기
+    // 2. kakaoToken을 이용하여 사용자 정보 얻기
     const profile = await this.getKakaoProfile(kakaoToken);
 
-    // 3. 사용자 정보를 통해 가입 여무 확인
+    // 3. 사용자 정보를 이용하여 회원가입 여부 확인
     const user = await this.userService.findUserByEmail(profile.email);
 
-    // 3, 회원가입이 안되어있다면? 자동회원가입
+    // 4. 회원가입이 되어있지 않다면 자동 회원가입
     const refreshToken = await this.getRefreshToken(profile, kakaoToken);
     if (!user) {
-      // 3-1. 회원가입시 refresh_token을 DB 저장
+      // 4-1. 회원가입 시 refresh_token을 DB에 저장
       const cdo = {
         name: profile.name,
         email: profile.email,
@@ -38,7 +38,7 @@ export class AuthService {
 
       await this.userService.create(cdo);
     } else {
-      // 3-2. 회원가입이 되어있다면? refresh_token을 업데이트
+      // 4-2. 회원가입이 되어있다면 refresh_token 업데이트
       const udo = { refresh_token: refreshToken };
       await this.userService.update(profile.email, udo);
     }
@@ -52,38 +52,34 @@ export class AuthService {
   }
 
   async refreshToken(refreshToken: string) {
-    // cookie에 refresh_token이 없다면? 401 에러
+    // 1. 쿠키에 refresh_token이 없다면 401 에러 발생
     if (!refreshToken) {
       throw new UnauthorizedException('refresh token expired');
     }
 
-    // refresh_token이 유효한지 확인
+    // 2. refresh_token의 유효성 확인
     const payload = this.jwtService.verify<ReFreshTokenDto>(refreshToken, {
       secret: process.env.JWT_SECRET,
     });
 
-    // refresh_token의 email을 이용하여 사용자 정보를 가져옴
+    // 3. refresh_token의 이메일을 이용하여 사용자 정보 가져오기
     const user = await this.userService.findUserByEmail(payload.email);
 
-    // refresh_token이 DB에 저장된 refresh_token과 일치하는지 확인
-    // 일치하지 않는다면? 401 에러
+    // 4. DB에 저장된 refresh_token과 입력받은 refresh_token이 일치하는지 확인
+    // 5. 일치하지 않는다면 401 에러 발생, 일치한다면 access_token 재발급
     if (user?.refresh_token !== refreshToken) {
       throw new UnauthorizedException('refresh token expired');
     }
-    // 일치한다면? access_token 재발급
+
     const accessToken = await this.getJwtToken(user, payload.kakaoToken);
 
-    // refresh_token 재발급
+    // 6. refresh_token 재발급 및 변경
     const newRefreshToken = await this.getRefreshToken(
       user,
       payload.kakaoToken,
     );
-
-    // newRefreshToken로 변경
     const udo = { refresh_token: newRefreshToken };
     await this.userService.update(payload.email, udo);
-
-    console.log('auth 401', refreshToken);
 
     return {
       accessToken,
@@ -154,6 +150,5 @@ export class AuthService {
       Authorization: `Bearer ${accessToken}`,
     };
     const result = await axios.post(url, {}, { headers }).then(res => res.data);
-    console.log(result);
   }
 }
