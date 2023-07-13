@@ -6,6 +6,9 @@ import { KakaoTokenDto } from '../_model/auth/dto/kakao-token.dto';
 import { UserKakaoDto } from '../_model/auth/dto/kakao-user.dto';
 import { UserDto } from 'src/_model/user/dto/user.dto';
 import { ReFreshTokenDto } from 'src/_model/auth/dto/refresh-token.dto';
+import { Request } from 'express';
+import { getTokenInRequest } from 'src/_shared/request.util';
+import { AccessTokenDto } from 'src/_model/auth/dto/access-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -54,7 +57,7 @@ export class AuthService {
   async refreshToken(refreshToken: string) {
     // 1. 쿠키에 refresh_token이 없다면 401 에러 발생
     if (!refreshToken) {
-      throw new UnauthorizedException('refresh token expired');
+      throw new UnauthorizedException('none refresh token');
     }
 
     // 2. refresh_token의 유효성 확인
@@ -143,12 +146,30 @@ export class AuthService {
     return refreshToken;
   }
 
-  async logout(accessToken: string) {
-    const url = 'https://kapi.kakao.com/v1/user/unlink';
-    const headers = {
-      'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-      Authorization: `Bearer ${accessToken}`,
-    };
-    const result = await axios.post(url, {}, { headers }).then(res => res.data);
+  async logout(req: Request) {
+    // 1. Request에 있는 Access Token을 가져온다.
+    const access_token = getTokenInRequest(req);
+
+    // 2. Access Token을 이용하여 Payload를 가져온다.
+    const payload = this.jwtService.decode(access_token);
+
+    // 3. Payload에 있는 Kakao Access Token을 이용하여 카카오 로그아웃
+    this.logoutKakao(payload['kakaoToken'] || '');
+
+    // 4. DB에 저장된 refresh_token을 삭제
+    this.userService.update(payload['email'], { refresh_token: '' });
+  }
+
+  async logoutKakao(kakaoToken: string) {
+    try {
+      const url = 'https://kapi.kakao.com/v1/user/unlink';
+      const headers = {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+        Authorization: `Bearer ${kakaoToken}`,
+      };
+      await axios.post(url, {}, { headers }).then(res => res.data);
+    } catch {
+      console.log('Already Kakao Access Token expired');
+    }
   }
 }

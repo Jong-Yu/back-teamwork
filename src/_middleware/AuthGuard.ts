@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { getTokenInRequest } from '../_shared/request.util';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(contest: ExecutionContext): Promise<boolean> {
     const request = contest.switchToHttp().getRequest();
-    const accessToken = this.extractTokenFromHeader(request);
+    const accessToken = getTokenInRequest(request);
 
     // access_token이 없다면 401 에러
     if (!accessToken) {
@@ -32,10 +32,5 @@ export class AuthGuard implements CanActivate {
     }
 
     return true;
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }
