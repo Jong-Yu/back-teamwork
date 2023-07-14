@@ -71,7 +71,7 @@ model Schedule {
   location        String                          @db.VarChar(45)
   location_detail String                          @db.VarChar(45)
   min_attend      Int?
-  desc            Unsupported("multilinestring")?
+  desc            String?
   registred_date  DateTime                        @db.Timestamp(0) @default(now())
   Team            Team                            @relation(fields: [team_id], references: [id], onUpdate: Restrict, map: "FK_6")
   Member          Member                          @relation(fields: [member_id], references: [id], onUpdate: Restrict, map: "FK_8")
@@ -85,7 +85,7 @@ model Team {
   id              String                          @id @default(cuid())
   name            String                          @db.VarChar(45)
   logo            String?                         @db.VarChar(45)
-  desc            Unsupported("multilinestring")?
+  desc            String?
   registered_date DateTime                        @db.Timestamp(0) @default(now())
   Member          Member[]
   Notice          Notice[]

@@ -27,15 +27,23 @@ export class AuthService {
       throw new UnauthorizedException('none refresh token');
     }
 
-    // 3. accessToken 유효성 확인
-    this.jwtService.verify<AccessTokenDto>(accessToken, {
-      secret: process.env.JWT_SECRET,
-    });
+    try {
+      // 3. accessToken 유효성 확인
+      this.jwtService.verify<AccessTokenDto>(accessToken, {
+        secret: process.env.JWT_SECRET,
+      });
+    } catch {
+      throw new UnauthorizedException('access token expired');
+    }
 
-    // 4. refreshToken 유효성 확인
-    this.jwtService.verify<AccessTokenDto>(refreshToken, {
-      secret: process.env.JWT_SECRET,
-    });
+    try {
+      // 4. refreshToken 유효성 확인
+      this.jwtService.verify<AccessTokenDto>(refreshToken, {
+        secret: process.env.JWT_SECRET,
+      });
+    } catch {
+      throw new UnauthorizedException('refresh token expired');
+    }
 
     // 5. 위의, 3, 4번에서 에러가 발생하지 않았다면, true 응답
     return true;
