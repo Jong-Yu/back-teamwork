@@ -1,14 +1,14 @@
 import axios from 'axios';
+import { Request } from 'express';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { KakaoTokenDto } from '../_model/auth/dto/kakao-token.dto';
+import { ReFreshTokenDto } from '../_model/auth/dto/refresh-token.dto';
 import { UserKakaoDto } from '../_model/auth/dto/kakao-user.dto';
-import { UserDto } from 'src/_model/user/dto/user.dto';
-import { ReFreshTokenDto } from 'src/_model/auth/dto/refresh-token.dto';
-import { Request } from 'express';
-import { getTokenInRequest } from 'src/_shared/request.util';
-import { AccessTokenDto } from 'src/_model/auth/dto/access-token.dto';
+import { UserDto } from '../_model/user/dto/user.dto';
+import { AccessTokenDto } from '../_model/auth/dto/access-token.dto';
+import { getTokenInRequest } from '../_shared/request.util';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +16,30 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
+
+  async isValidToken(req: Request) {
+    // 1. AccessToken refreshToken 가져오기
+    const accessToken = getTokenInRequest(req);
+    const refreshToken = req.cookies['refresh_token'];
+
+    // 2. 쿠키에 refresh_token이 없다면 401 에러 발생
+    if (!refreshToken) {
+      throw new UnauthorizedException('none refresh token');
+    }
+
+    // 3. accessToken 유효성 확인
+    this.jwtService.verify<AccessTokenDto>(accessToken, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    // 4. refreshToken 유효성 확인
+    this.jwtService.verify<AccessTokenDto>(refreshToken, {
+      secret: process.env.JWT_SECRET,
+    });
+
+    // 5. 위의, 3, 4번에서 에러가 발생하지 않았다면, true 응답
+    return true;
+  }
 
   async getToken(code: string) {
     // 1. 코드를 이용하여 access_token 얻기
