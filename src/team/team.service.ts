@@ -52,7 +52,9 @@ export class TeamService {
       const myTeams = await this.prisma.team.findMany({
         where: {
           Member: {
-            some: { id: user.id },
+            some: {
+              user_id: user.id,
+            },
           },
         },
       });
