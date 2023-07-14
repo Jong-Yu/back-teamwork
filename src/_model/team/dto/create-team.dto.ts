@@ -7,4 +7,8 @@ export class CreateTeamDto {
   @IsString()
   @IsOptional()
   logo?: string;
+
+  @IsString()
+  @IsOptional()
+  desc?: string;
 }
