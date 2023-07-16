@@ -1,5 +1,11 @@
 import { Member_status } from '@prisma/client';
-import { IsDate, IsEnum, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class MemberDto {
   @IsString()
