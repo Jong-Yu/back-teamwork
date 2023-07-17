@@ -61,24 +61,27 @@ export class AuthService {
     const user = await this.userService.findUserByEmail(profile.email);
 
     // 4. 회원가입이 되어있지 않다면 자동 회원가입
-    const refreshToken = await this.getRefreshToken(profile, kakaoToken);
+    let refreshToken = '';
     if (!user) {
-      // 4-1. 회원가입 시 refresh_token을 DB에 저장
       const cdo = {
         name: profile.name,
         email: profile.email,
         phone: '010-1111-1111',
-        refresh_token: refreshToken,
       };
 
-      await this.userService.create(cdo);
+      // 4.1 회원가입 후 refresh_token 발급
+      const newUser = await this.userService.create(cdo);
+      refreshToken = await this.getRefreshToken(newUser, kakaoToken);
     } else {
-      // 4-2. 회원가입이 되어있다면 refresh_token 업데이트
-      const udo = { refresh_token: refreshToken };
-      await this.userService.update(profile.email, udo);
+      // 4.2 회원가입이 되어있다면 refresh_token 발급
+      refreshToken = await this.getRefreshToken(user, kakaoToken);
     }
 
-    const jwtToken = await this.getJwtToken(profile, kakaoToken);
+    // 5. refresh_token을 DB에 저장
+    const udo = { refresh_token: refreshToken };
+    await this.userService.update(profile.email, udo);
+
+    const jwtToken = await this.getJwtToken(user, kakaoToken);
 
     return {
       accessToken: jwtToken,
@@ -149,7 +152,7 @@ export class AuthService {
     };
   }
 
-  async getJwtToken(userKakao: UserKakaoDto | UserDto, kakaoToken: string) {
+  async getJwtToken(userKakao: UserDto, kakaoToken: string) {
     return this.jwtService.signAsync(
       {
         email: userKakao.email,
@@ -163,10 +166,11 @@ export class AuthService {
     );
   }
 
-  async getRefreshToken(userKakao: UserKakaoDto | UserDto, kakaoToken: string) {
+  async getRefreshToken(user: UserDto, kakaoToken: string) {
     const refreshToken = await this.jwtService.signAsync(
       {
-        email: userKakao.email,
+        id: user.id,
+        email: user.email,
         kakaoToken,
       },
       {
