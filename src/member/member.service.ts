@@ -23,7 +23,7 @@ export class MemberService {
         ...updateMemberDto,
       },
       where: {
-        member_Id: memberId,
+        id: memberId,
       },
     });
   }

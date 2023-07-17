@@ -7,4 +7,10 @@ export class CreateMemberDto {
 
   @IsEnum(Member_status)
   status: Member_status;
+
+  @IsString()
+  team_id: string;
+
+  @IsString()
+  user_id: string;
 }
