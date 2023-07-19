@@ -1,15 +1,7 @@
 import { Response, Request } from 'express';
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '../_middleware/AuthGuard';
+import { getRefreshTokenInCookie } from '../_shared/request.util';
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')
@@ -23,8 +15,7 @@ export class AuthController {
    */
   @Get('isvalid')
   async isValid(@Req() req: Request) {
-    const isBigin = await this.authService.isValidToken(req);
-    return isBigin;
+    return await this.authService.isValidToken(req);
   }
 
   /**
@@ -36,16 +27,17 @@ export class AuthController {
       const { accessToken, refreshToken } = await this.authService.getToken(
         code,
       );
-      res.cookie('refresh_token', refreshToken);
+      res.cookie('refresh_token', refreshToken, {
+        httpOnly: true,
+      });
 
-      // {
-      //   httpOnly: true,
-      //   sameSite: 'none',
-      // }
+      res.cookie('access_token', accessToken, {
+        httpOnly: true,
+      });
 
-      return res.send(accessToken);
+      res.status(200).send('success');
     } catch (e) {
-      res.send(e);
+      res.status(e.status).send(e);
     }
   }
 
@@ -56,17 +48,18 @@ export class AuthController {
   async refreshToken(@Req() req: Request, @Res() res: Response) {
     try {
       const { accessToken, refreshToken } = await this.authService.refreshToken(
-        req.cookies['refresh_token'],
+        getRefreshTokenInCookie(req),
       );
 
-      res.cookie('refresh_token', refreshToken);
+      res.cookie('access_token', accessToken, {
+        httpOnly: true,
+      });
 
-      // , {
-      //   httpOnly: true,
-      //   sameSite: 'none',
-      // }
+      res.cookie('refresh_token', refreshToken, {
+        httpOnly: true,
+      });
 
-      return res.send(accessToken);
+      res.status(200).send('success');
     } catch (e) {
       res.status(e.status).send(e);
     }
@@ -76,15 +69,15 @@ export class AuthController {
    * @description 로그아웃
    */
   @Post('logout')
-  @UseGuards(AuthGuard)
   async logout(@Req() req: Request, @Res() res: Response): Promise<void> {
     try {
       this.authService.logout(req);
+      res.clearCookie('access_token');
       res.clearCookie('refresh_token');
     } catch {
       res.status(500).send();
     }
 
-    res.send();
+    res.send('logout success');
   }
 }

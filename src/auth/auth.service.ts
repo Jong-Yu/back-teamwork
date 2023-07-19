@@ -8,7 +8,10 @@ import { ReFreshTokenDto } from '../_model/auth/dto/refresh-token.dto';
 import { UserKakaoDto } from '../_model/auth/dto/kakao-user.dto';
 import { UserDto } from '../_model/user/dto/user.dto';
 import { AccessTokenDto } from '../_model/auth/dto/access-token.dto';
-import { getTokenInRequest } from '../_shared/request.util';
+import {
+  getAccessTokenInCookie,
+  getRefreshTokenInCookie,
+} from '../_shared/request.util';
 
 @Injectable()
 export class AuthService {
@@ -17,14 +20,31 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  async tempLogin() {
+    const user = await this.userService.findUserByEmail('jongyu16@gmail.com');
+
+    const accessToken = await this.getJwtToken(user, '');
+
+    const refreshToken = await this.getRefreshToken(user, '');
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
   async isValidToken(req: Request) {
+    // 이 함수는 토큰이 유요한지 여부만 판단하는 함수이고,
+    // 401로 error를 발생시키면서 로그인 페이지로 이동시키는 함수는 아닙니다.
+    // 그래서 토큰이 유효하지 않다면, false를 반환하고, 유효하다면 true를 반환합니다.
+
     // 1. AccessToken refreshToken 가져오기
-    const accessToken = getTokenInRequest(req);
-    const refreshToken = req.cookies['refresh_token'];
+    const accessToken = getAccessTokenInCookie(req);
+    const refreshToken = getRefreshTokenInCookie(req);
 
     // 2. 쿠키에 refresh_token이 없다면 401 에러 발생
     if (!refreshToken) {
-      throw new UnauthorizedException('none refresh token');
+      return false;
     }
 
     try {
@@ -33,7 +53,7 @@ export class AuthService {
         secret: process.env.JWT_SECRET,
       });
     } catch {
-      throw new UnauthorizedException('access token expired');
+      return false;
     }
 
     try {
@@ -42,7 +62,7 @@ export class AuthService {
         secret: process.env.JWT_SECRET,
       });
     } catch {
-      throw new UnauthorizedException('refresh token expired');
+      return false;
     }
 
     // 5. 위의, 3, 4번에서 에러가 발생하지 않았다면, true 응답
@@ -184,16 +204,19 @@ export class AuthService {
 
   async logout(req: Request) {
     // 1. Request에 있는 Access Token을 가져온다.
-    const access_token = getTokenInRequest(req);
+    const access_token = getAccessTokenInCookie(req);
 
     // 2. Access Token을 이용하여 Payload를 가져온다.
     const payload = this.jwtService.decode(access_token);
 
-    // 3. Payload에 있는 Kakao Access Token을 이용하여 카카오 로그아웃
-    this.logoutKakao(payload['kakaoToken'] || '');
+    // payload가 없다면 이미 로그아웃 된 상태로 판단
+    if (payload) {
+      // 3. Payload에 있는 Kakao Access Token을 이용하여 카카오 로그아웃
+      this.logoutKakao(payload['kakaoToken'] || '');
 
-    // 4. DB에 저장된 refresh_token을 삭제
-    this.userService.update(payload['email'], { refresh_token: '' });
+      // 4. DB에 저장된 refresh_token을 삭제
+      this.userService.update(payload['email'], { refresh_token: '' });
+    }
   }
 
   async logoutKakao(kakaoToken: string) {
