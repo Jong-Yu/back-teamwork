@@ -2,6 +2,7 @@ import { Request } from 'express';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../_middleware/AuthGuard';
 import { CreateTeamDto } from '../_model/team/dto/create-team.dto';
+import { TeamDto } from '../_model/team/dto/team.dto';
 import { TeamService } from './team.service';
 
 @Controller('team')
@@ -16,7 +17,7 @@ export class TeamController {
 
   @Get('findMyTeam')
   @UseGuards(AuthGuard)
-  findMyTeam(@Req() req: Request) {
+  findMyTeam(@Req() req: Request): Promise<TeamDto[]> {
     return this.teamService.findMyTeam(req);
   }
 }

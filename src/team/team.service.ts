@@ -44,7 +44,7 @@ export class TeamService {
   async findMyTeam(req: Request) {
     const accessToken = getAccessTokenInCookie(req);
 
-    const payload = this.jwtService.decode(accessToken);
+    const payload = this.jwtService.verify(accessToken);
 
     const user = await this.userService.findUserByEmail(payload['email']);
 
