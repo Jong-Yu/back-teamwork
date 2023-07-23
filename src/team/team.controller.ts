@@ -1,5 +1,13 @@
 import { Request } from 'express';
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '../_middleware/AuthGuard';
 import { CreateTeamDto } from '../_model/team/dto/create-team.dto';
 import { TeamDto } from '../_model/team/dto/team.dto';
@@ -19,5 +27,11 @@ export class TeamController {
   @UseGuards(AuthGuard)
   findMyTeam(@Req() req: Request): Promise<TeamDto[]> {
     return this.teamService.findMyTeam(req);
+  }
+
+  @Get('findTeamById')
+  @UseGuards(AuthGuard)
+  findTeamById(@Query('id') id: string): Promise<TeamDto> {
+    return this.teamService.findMyTeamById(id);
   }
 }

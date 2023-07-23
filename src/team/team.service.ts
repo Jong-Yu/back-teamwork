@@ -64,4 +64,12 @@ export class TeamService {
       throw new Error('유저가 존재하지 않습니다.');
     }
   }
+
+  async findMyTeamById(id: string) {
+    const team = await this.prisma.team.findUnique({
+      where: { id },
+    });
+
+    return team;
+  }
 }
