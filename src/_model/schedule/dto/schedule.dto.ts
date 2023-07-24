@@ -11,6 +11,12 @@ export class ScheduleDto {
   date: Date;
 
   @IsString()
+  startTime: string;
+
+  @IsString()
+  endTime: string;
+
+  @IsString()
   location: string;
 
   @IsString()

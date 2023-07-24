@@ -67,7 +67,9 @@ model Schedule {
   team_id         String                          @db.VarChar(45)
   member_id       String                          @db.VarChar(45)
   title           String                          @db.VarChar(45)
-  date            DateTime                        @db.Timestamp(0) @default(now())
+  date            DateTime                        @db.Timestamp(0)
+  startTime       String                          @db.VarChar(45)
+  endTime         String                          @db.VarChar(45)
   location        String                          @db.VarChar(45)
   location_detail String                          @db.VarChar(45)
   min_attend      Int?

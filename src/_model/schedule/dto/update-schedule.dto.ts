@@ -1,9 +1,18 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateScheduleDto {
   @IsString()
   @IsOptional()
   title?: string;
+
+  @IsDate()
+  date: Date;
+
+  @IsString()
+  startTime: string;
+
+  @IsString()
+  endTime: string;
 
   @IsString()
   @IsOptional()
