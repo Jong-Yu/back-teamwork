@@ -12,7 +12,9 @@ import { AuthGuard } from '../_middleware/AuthGuard';
 import { CreateTeamDto } from '../_model/team/dto/create-team.dto';
 import { TeamDto } from '../_model/team/dto/team.dto';
 import { TeamService } from './team.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('팀 Api')
 @Controller('team')
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
