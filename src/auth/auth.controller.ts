@@ -28,11 +28,13 @@ export class AuthController {
         code,
       );
       res.cookie('refresh_token', refreshToken, {
-        // httpOnly: true,
+        httpOnly: true,
+        domain: 'https://team-work.zeabur.zpp',
       });
 
       res.cookie('access_token', accessToken, {
-        // httpOnly: true,
+        httpOnly: true,
+        domain: 'https://team-work.zeabur.zpp',
       });
 
       res.status(200).send('success');
@@ -54,10 +56,12 @@ export class AuthController {
 
       res.cookie('access_token', accessToken, {
         httpOnly: true,
+        domain: 'https://team-work.zeabur.zpp',
       });
 
       res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
+        domain: 'https://team-work.zeabur.zpp',
       });
 
       res.status(200).send('success');
@@ -74,8 +78,12 @@ export class AuthController {
   async logout(@Req() req: Request, @Res() res: Response): Promise<void> {
     try {
       this.authService.logout(req);
-      res.clearCookie('access_token');
-      res.clearCookie('refresh_token');
+      res.clearCookie('access_token', {
+        domain: 'https://team-work.zeabur.zpp',
+      });
+      res.clearCookie('refresh_token', {
+        domain: 'https://team-work.zeabur.zpp',
+      });
     } catch (e) {
       console.log(e);
       res.status(500).send();
