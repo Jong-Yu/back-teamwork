@@ -150,7 +150,13 @@ export class AuthService {
     const headers = {
       'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
     };
-    const data = `grant_type=authorization_code&client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${process.env.KAKAO_CALLBACK_URL}&code=${code}`;
+
+    const data = {
+      grant_type: 'authorization_code',
+      client_id: process.env.KAKAO_CLIENT_ID,
+      redirect_uri: process.env.KAKAO_CALLBACK_URL,
+      code: code,
+    };
 
     return await axios
       .post<KakaoTokenDto>(url, data, { headers })
