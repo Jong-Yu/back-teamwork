@@ -12,7 +12,7 @@
     "start": "prisma generate && nest start -w",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "prisma generate && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "generate": "npx prisma generate && npx prettier --write 'src/_model/**/*.ts'"
   },
