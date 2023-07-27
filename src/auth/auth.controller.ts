@@ -37,6 +37,7 @@ export class AuthController {
 
       res.status(200).send('success');
     } catch (e) {
+      console.log(e);
       res.status(e.status).send(e);
     }
   }
@@ -61,6 +62,7 @@ export class AuthController {
 
       res.status(200).send('success');
     } catch (e) {
+      console.log(e);
       res.status(e.status).send(e);
     }
   }
@@ -74,7 +76,8 @@ export class AuthController {
       this.authService.logout(req);
       res.clearCookie('access_token');
       res.clearCookie('refresh_token');
-    } catch {
+    } catch (e) {
+      console.log(e);
       res.status(500).send();
     }
 
