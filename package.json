@@ -32,6 +32,7 @@
     "mo": "^1.7.3",
     "nestjs-prisma": "^0.20.1",
     "passport-kakao": "^1.0.1",
+    "prisma": "^4.15.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
@@ -58,7 +59,6 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "prettier": "^2.3.2",
-    "prisma": "^4.15.0",
     "prisma-generator-nestjs-dto": "^1.1.4",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
