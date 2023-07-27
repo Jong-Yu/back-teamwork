@@ -17,11 +17,13 @@
     "generate": "npx prisma generate && npx prettier --write 'src/_model/**/*.ts'"
   },
   "dependencies": {
+    "@nestjs/cli": "^9.0.0",
     "@nestjs/axios": "^3.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.1.0",
+    "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^10.0.3",
     "@prisma/client": "^4.16.0",
     "axios": "^1.4.0",
@@ -37,8 +39,6 @@
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^9.0.0",
-    "@nestjs/passport": "^10.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/swagger": "^7.0.2",
     "@nestjs/testing": "^9.0.0",
