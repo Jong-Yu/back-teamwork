@@ -6,13 +6,13 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build ",
+    "build": "npx prisma generate && nest build ",
     "build:swc": "npx swc --out-dir dist -w src",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "prisma generate && nest start -w",
+    "start": "nest start -w",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "prisma generate && node dist/main",
+    "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "generate": "npx prisma generate && npx prettier --write 'src/_model/**/*.ts'"
   },
