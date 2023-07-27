@@ -10,6 +10,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(validationPipe);
   app.use(cookieParser());
+  app.enableCors();
 
   // Swagger
   setSwagger(app);
