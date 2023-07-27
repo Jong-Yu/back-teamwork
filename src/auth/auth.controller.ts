@@ -28,11 +28,11 @@ export class AuthController {
         code,
       );
       res.cookie('refresh_token', refreshToken, {
-        httpOnly: true,
+        // httpOnly: true,
       });
 
       res.cookie('access_token', accessToken, {
-        httpOnly: true,
+        // httpOnly: true,
       });
 
       res.status(200).send('success');
