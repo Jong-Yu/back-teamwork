@@ -5,6 +5,8 @@ export function setCookie(res: Response, key: string, value: string) {
     domain: 'zeabur.app',
     httpOnly: true,
     path: '/',
+    sameSite: 'none',
+    secure: true,
   });
 }
 
