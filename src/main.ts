@@ -11,6 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(validationPipe);
   app.use(cookieParser());
   app.enableCors({
+    origin: 'https://teamwork.zeabur.app',
     credentials: true,
   });
 
