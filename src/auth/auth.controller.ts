@@ -3,6 +3,7 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { getRefreshTokenInCookie } from '../_shared/request.util';
 import { AuthService } from './auth.service';
+import { clearCookie, setCookie } from 'src/_shared/cookie.util';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,15 +28,9 @@ export class AuthController {
       const { accessToken, refreshToken } = await this.authService.getToken(
         code,
       );
-      res.cookie('refresh_token', refreshToken, {
-        httpOnly: true,
-        domain: '.zeabur.app',
-      });
 
-      res.cookie('access_token', accessToken, {
-        httpOnly: true,
-        domain: '.zeabur.app',
-      });
+      setCookie(res, 'access_token', accessToken);
+      setCookie(res, 'refresh_token', refreshToken);
 
       res.status(200).send('success');
     } catch (e) {
@@ -54,15 +49,8 @@ export class AuthController {
         getRefreshTokenInCookie(req),
       );
 
-      res.cookie('access_token', accessToken, {
-        httpOnly: true,
-        domain: '.zeabur.app',
-      });
-
-      res.cookie('refresh_token', refreshToken, {
-        httpOnly: true,
-        domain: '.zeabur.app',
-      });
+      setCookie(res, 'access_token', accessToken);
+      setCookie(res, 'refresh_token', refreshToken);
 
       res.status(200).send('success');
     } catch (e) {
@@ -78,12 +66,9 @@ export class AuthController {
   async logout(@Req() req: Request, @Res() res: Response): Promise<void> {
     try {
       this.authService.logout(req);
-      res.clearCookie('access_token', {
-        domain: '.zeabur.app',
-      });
-      res.clearCookie('refresh_token', {
-        domain: '.zeabur.app',
-      });
+
+      clearCookie(res, 'access_token');
+      clearCookie(res, 'refresh_token');
     } catch (e) {
       console.log(e);
       res.status(500).send();
