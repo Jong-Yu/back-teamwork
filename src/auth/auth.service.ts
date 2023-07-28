@@ -86,7 +86,6 @@ export class AuthService {
       const cdo = {
         name: profile.name,
         email: profile.email,
-        phone: '010-1111-1111',
       };
 
       // 4.1 회원가입 후 refresh_token 발급

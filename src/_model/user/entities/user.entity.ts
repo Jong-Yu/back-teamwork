@@ -13,7 +13,8 @@ export class User {
   email: string | null;
 
   @IsString()
-  phone: string;
+  @IsOptional()
+  phone: string | null;
 
   @IsDate()
   sign_date: Date;

@@ -25,7 +25,7 @@ model User {
   id        String   @id @default(cuid())
   name      String   @db.VarChar(45)
   email     String?  @db.VarChar(45) @unique
-  phone     String   @db.VarChar(45) @unique
+  phone     String   @db.VarChar(45)
   sign_date DateTime @db.Timestamp(0) @default(dbgenerated("CURRENT_TIMESTAMP"))
   refresh_token String? @db.VarChar(5000)
   Member    Member[]
