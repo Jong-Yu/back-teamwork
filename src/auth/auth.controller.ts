@@ -29,12 +29,12 @@ export class AuthController {
       );
       res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
-        domain: 'zeabur.app',
+        domain: '.zeabur.app',
       });
 
       res.cookie('access_token', accessToken, {
         httpOnly: true,
-        domain: 'zeabur.app',
+        domain: '.zeabur.app',
       });
 
       res.status(200).send('success');
@@ -56,12 +56,12 @@ export class AuthController {
 
       res.cookie('access_token', accessToken, {
         httpOnly: true,
-        domain: 'zeabur.app',
+        domain: '.zeabur.app',
       });
 
       res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
-        domain: 'zeabur.app',
+        domain: '.zeabur.app',
       });
 
       res.status(200).send('success');
@@ -79,10 +79,10 @@ export class AuthController {
     try {
       this.authService.logout(req);
       res.clearCookie('access_token', {
-        domain: 'zeabur.app',
+        domain: '.zeabur.app',
       });
       res.clearCookie('refresh_token', {
-        domain: 'zeabur.app',
+        domain: '.zeabur.app',
       });
     } catch (e) {
       console.log(e);
