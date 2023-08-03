@@ -5,6 +5,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { getAccessTokenInCookie } from '../_shared/request.util';
 import { CreateTeamDto } from '../_model/team/dto/create-team.dto';
 import { UserService } from '../user/user.service';
+import { verify } from '../_shared/kakao.uitl';
 
 @Injectable()
 export class TeamService {
@@ -17,9 +18,9 @@ export class TeamService {
   async create(req: Request, createTeamDto: CreateTeamDto) {
     const accessToken = getAccessTokenInCookie(req);
 
-    const payload = this.jwtService.decode(accessToken);
+    const profile = await verify(accessToken);
 
-    const user = await this.userService.findUserByEmail(payload['email']);
+    const user = await this.userService.findUserByEmail(profile.email);
 
     if (user) {
       const team = await this.prisma.team.create({
@@ -44,9 +45,9 @@ export class TeamService {
   async findMyTeam(req: Request) {
     const accessToken = getAccessTokenInCookie(req);
 
-    const payload = this.jwtService.verify(accessToken);
+    const profile = await verify(accessToken);
 
-    const user = await this.userService.findUserByEmail(payload['email']);
+    const user = await this.userService.findUserByEmail(profile.email);
 
     if (user) {
       const myTeams = await this.prisma.team.findMany({

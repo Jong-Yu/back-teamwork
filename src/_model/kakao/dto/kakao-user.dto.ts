@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class UserKakaoDto {
+export class KakaoUserDto {
   @IsString()
   name: string;
 

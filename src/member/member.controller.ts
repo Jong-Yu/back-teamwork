@@ -2,8 +2,8 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../_middleware/AuthGuard';
 import { MemberService } from './member.service';
-import { CreateMemberDto } from 'src/_model/member/dto/create-member.dto';
-import { UpdateMemberDto } from 'src/_model/member/dto/update-member.dto';
+import { CreateMemberDto } from '../_model/member/dto/create-member.dto';
+import { UpdateMemberDto } from '../_model/member/dto/update-member.dto';
 
 @ApiTags('멤버 API')
 @Controller('member')

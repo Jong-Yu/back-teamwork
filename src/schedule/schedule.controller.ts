@@ -1,6 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/_middleware/AuthGuard';
+import { AuthGuard } from '../_middleware/AuthGuard';
 import { ScheduleService } from './schedule.service';
 
 @ApiTags('스케줄 API')

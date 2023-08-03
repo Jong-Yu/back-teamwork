@@ -2,8 +2,8 @@ import { Response, Request } from 'express';
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { getRefreshTokenInCookie } from '../_shared/request.util';
+import { clearCookie, setCookie } from '../_shared/cookie.util';
 import { AuthService } from './auth.service';
-import { clearCookie, setCookie } from 'src/_shared/cookie.util';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -42,10 +42,10 @@ export class AuthController {
   /**
    * @description 토큰 재발급
    */
-  @Post('refresh')
-  async refreshToken(@Req() req: Request, @Res() res: Response) {
+  @Post('reissueToken')
+  async reissueToken(@Req() req: Request, @Res() res: Response) {
     try {
-      const { accessToken, refreshToken } = await this.authService.refreshToken(
+      const { accessToken, refreshToken } = await this.authService.reissueToken(
         getRefreshTokenInCookie(req),
       );
 
