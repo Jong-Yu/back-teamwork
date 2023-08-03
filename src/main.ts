@@ -10,10 +10,13 @@ async function bootstrap() {
 
   app.useGlobalPipes(validationPipe);
   app.use(cookieParser());
-  app.enableCors({
-    origin: 'https://team-work.zeabur.app',
-    credentials: true,
-  });
+
+  if (process.env.NODE_ENV !== 'development') {
+    app.enableCors({
+      origin: 'https://team-work.zeabur.app',
+      credentials: true,
+    });
+  }
 
   // Swagger
   setSwagger(app);
