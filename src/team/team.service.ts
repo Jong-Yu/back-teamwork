@@ -2,10 +2,10 @@ import { Request } from 'express';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'nestjs-prisma';
-import { getAccessTokenInCookie } from '../_shared/request.util';
+import { getAccessTokenInCookie } from '../_shared/util/Request/request.util';
 import { CreateTeamDto } from '../_model/team/dto/create-team.dto';
 import { UserService } from '../user/user.service';
-import { verify } from '../_shared/kakao.uitl';
+import { verify } from '../_shared/util/Kakao/kakao.util';
 
 @Injectable()
 export class TeamService {

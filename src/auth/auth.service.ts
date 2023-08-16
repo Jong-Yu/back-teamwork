@@ -1,21 +1,17 @@
 import { Request } from 'express';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { ReFreshTokenDto } from '../_model/auth/dto/refresh-token.dto';
-import { UserDto } from '../_model/user/dto/user.dto';
-import { AccessTokenDto } from '../_model/auth/dto/access-token.dto';
 import {
   getAccessTokenInCookie,
   getRefreshTokenInCookie,
-} from '../_shared/request.util';
+} from '../_shared/util/Request/request.util';
 import {
   getKakaoProfile,
   getKakaoToken,
   logoutKakao,
   reissue,
   verify,
-} from '../_shared/kakao.uitl';
+} from '../_shared/util/Kakao/kakao.util';
 
 @Injectable()
 export class AuthService {

@@ -1,8 +1,8 @@
 import { Response, Request } from 'express';
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { getRefreshTokenInCookie } from '../_shared/request.util';
-import { clearCookie, setCookie } from '../_shared/cookie.util';
+import { getRefreshTokenInCookie } from '../_shared/util/Request/request.util';
+import { clearCookie, setCookie } from '../_shared/util/Cookie/cookie.util';
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')

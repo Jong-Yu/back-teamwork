@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { KakaoTokenDto } from '../_model/kakao/dto/kakao-token.dto';
-import { KakaoUserDto } from '../_model/kakao/dto/kakao-user.dto';
-import { KakaoRefreshTokenDto } from '../_model/kakao/dto/kakao-refresh-token.dto';
+import { KakaoTokenDto } from '../../../_model/kakao/dto/kakao-token.dto';
+import { KakaoUserDto } from '../../../_model/kakao/dto/kakao-user.dto';
+import { KakaoRefreshTokenDto } from '../../../_model/kakao/dto/kakao-refresh-token.dto';
 
 /**
  * 카카오 토큰을 가져옵니다.
