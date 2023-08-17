@@ -1,29 +1,35 @@
 import { Response } from 'express';
 import { setCookie, clearCookie } from './cookie.util';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 describe('cookie.util', () => {
+  let mockRes: Partial<Response>;
+
+  // 각 테스트 케이스 실행 전에 항상 실행되는 부분
+  beforeEach(() => {
+    process.env.NODE_ENV = 'test';
+
+    // Response의 메서드들을 mock 함수로 초기화
+    mockRes = {
+      cookie: vi.fn(),
+      clearCookie: vi.fn(),
+    };
+  });
+
   describe('setCookie', () => {
-    it('주어진 키와 값으로 쿠키를 설정해야 합니다.', () => {
-      const res: Response = {
-        cookie: vi.fn(),
-      } as unknown as Response;
+    it('개발 환경에서 주어진 키와 값으로 쿠키를 설정', () => {
+      process.env.NODE_ENV = 'development';
 
-      setCookie(res, 'testKey', 'testValue');
-
-      expect(res.cookie).toHaveBeenCalledWith('testKey', 'testValue');
+      setCookie(mockRes as Response, 'testKey', 'testValue');
+      expect(mockRes.cookie).toHaveBeenCalledWith('testKey', 'testValue');
     });
 
-    it('프로덕션 환경에서는 주어진 키와 값으로 보안 쿠키를 설정해야 합니다.', () => {
+    it('운영 환경에서는주어진 키와 값으로 보안 쿠키를 설정', () => {
       process.env.NODE_ENV = 'production';
 
-      const res: Response = {
-        cookie: vi.fn(),
-      } as unknown as Response;
+      setCookie(mockRes as Response, 'testKey', 'testValue');
 
-      setCookie(res, 'testKey', 'testValue');
-
-      expect(res.cookie).toHaveBeenCalledWith('testKey', 'testValue', {
+      expect(mockRes.cookie).toHaveBeenCalledWith('testKey', 'testValue', {
         domain: 'zeabur.app',
         httpOnly: true,
         path: '/',
@@ -36,33 +42,24 @@ describe('cookie.util', () => {
   });
 
   describe('clearCookie', () => {
-    it('주어진 키로 쿠키를 삭제해야 합니다.', () => {
-      const res: Response = {
-        cookies: { testKey: 'testValue' },
-        clearCookie: vi.fn(),
-      } as unknown as Response;
+    it('개발 환경에서 주어진 키로 쿠키를 삭제', () => {
+      process.env.NODE_ENV = 'development';
 
-      clearCookie(res, 'testKey');
+      clearCookie(mockRes as Response, 'testKey');
 
-      expect(res.clearCookie).toHaveBeenCalledWith('testKey');
+      expect(mockRes.clearCookie).toHaveBeenCalledWith('testKey');
     });
 
-    it('프로덕션 환경에서는 주어진 키로 쿠키를 삭제해야 합니다.', () => {
+    it('프로덕션 환경에서 주어진 키로 쿠키를 삭제', () => {
       process.env.NODE_ENV = 'production';
 
-      const res: Response = {
-        clearCookie: vi.fn(),
-      } as unknown as Response;
+      clearCookie(mockRes as Response, 'testKey');
 
-      clearCookie(res, 'testKey');
-
-      expect(res.clearCookie).toHaveBeenCalledWith('testKey', {
+      expect(mockRes.clearCookie).toHaveBeenCalledWith('testKey', {
         domain: 'zeabur.app',
         httpOnly: true,
         path: '/',
       });
-
-      process.env.NODE_ENV = 'test';
     });
   });
 });
