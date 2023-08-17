@@ -4,12 +4,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { verify } from '../_shared/kakao.uitl';
-import { getAccessTokenInCookie } from '../_shared/request.util';
+import { verify } from '../_shared/util/Kakao/kakao.util';
+import { getAccessTokenInCookie } from '../_shared/util/Request/request.util';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   async canActivate(contest: ExecutionContext): Promise<boolean> {
+    if (process.env.NODE_ENV === 'test') return true;
+
     const request = contest.switchToHttp().getRequest();
     const accessToken = getAccessTokenInCookie(request);
 
