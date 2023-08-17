@@ -1,0 +1,12 @@
+<testExecutions version="1">
+  <file path="src/_shared/util/Cookie/cookie.util.test.ts">
+    <testCase name="cookie.util - setCookie - 개발 환경에서 주어진 키와 값으로 쿠키를 설정" duration="8" />
+    <testCase name="cookie.util - setCookie - 운영 환경에서는주어진 키와 값으로 보안 쿠키를 설정" duration="2" />
+    <testCase name="cookie.util - clearCookie - 개발 환경에서 주어진 키로 쿠키를 삭제" duration="3" />
+    <testCase name="cookie.util - clearCookie - 프로덕션 환경에서 주어진 키로 쿠키를 삭제" duration="1" />
+  </file>
+  <file path="src/_shared/util/Request/request.util.test.ts">
+    <testCase name="request.util - getAccessTokenInCookie - request에서 access_token 가져오기." duration="4" />
+    <testCase name="request.util - getRefreshTokenInCookie - 주어진 request에서 refresh_token 가져오기." duration="2" />
+  </file>
+</testExecutions>

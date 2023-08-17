@@ -6,10 +6,13 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest --run --reporter vitest-sonar-reporter",
+    "prebuild": "yarn test",
+    "prebuild:swc": "yarn test",
     "build": "npx prisma generate --schema=./prisma/schema.prisma && nest build ",
     "build:swc": "npx swc --out-dir dist -w src",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prestart": "yarn test",
     "start": "nest start -w",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -69,6 +72,7 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.0.0",
     "unplugin-swc": "^1.3.2",
-    "vitest": "^0.34.1"
+    "vitest": "^0.34.1",
+    "vitest-sonar-reporter": "^0.4.1"
   }
 }
