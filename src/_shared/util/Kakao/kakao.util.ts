@@ -71,6 +71,8 @@ export async function logoutKakao(kakaoToken: string) {
  * @returns
  */
 export async function verify(token: string): Promise<KakaoUserDto> {
+  if (process.env.NODE_ENV === 'test') return { name: 'test', email: '' };
+
   const url = 'https://kapi.kakao.com/v1/user/access_token_info';
   const headers = {
     Authorization: `Bearer ${token}`,

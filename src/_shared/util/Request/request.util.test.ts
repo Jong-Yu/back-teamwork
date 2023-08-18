@@ -12,7 +12,6 @@ describe('request.util', () => {
   beforeEach(() => {
     process.env.NODE_ENV = 'test';
 
-    // Response의 메서드들을 mock 함수로 초기화
     mockReq = {
       cookies: {
         access_token: 'test_access_token',

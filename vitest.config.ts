@@ -9,8 +9,6 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
     },
-    reporters: 'vitest-soner-reporter',
-    outputFile: './src/test-report.xml',
   },
   plugins: [
     // This is required to build the test files with SWC

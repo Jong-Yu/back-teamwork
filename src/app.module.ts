@@ -1,5 +1,4 @@
 import { Logger, Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
 import { AuthModule } from './auth/auth.module';
@@ -22,10 +21,6 @@ import { ScheduleModule } from './schedule/schedule.module';
           }),
         ],
       },
-    }),
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET,
     }),
     AuthModule,
     UserModule,
